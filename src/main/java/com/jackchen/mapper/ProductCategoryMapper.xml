@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jackchen.mapper.ProductCategoryMapper" >
+  <resultMap id="BaseResultMap" type="com.jackchen.pojo.ProductCategory" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+
+    <association property="parent" javaType="com.jackchen.pojo.ProductCategory">
+      <id column="id" property="id" jdbcType="BIGINT" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+    </association>
+   <association property="product" javaType="com.jackchen.pojo.Product">
+     <id column="id" property="id" jdbcType="BIGINT" />
+     <result column="name" property="name" jdbcType="VARCHAR" />
+     <result column="description" property="description" jdbcType="VARCHAR" />
+     <result column="price" property="price" jdbcType="DECIMAL" />
+     <result column="stock" property="stock" jdbcType="BIGINT" />
+     <result column="major_id" property="majorId" jdbcType="BIGINT" />
+     <result column="minor_id" property="minorId" jdbcType="BIGINT" />
+     <result column="img_source" property="imgSource" jdbcType="VARCHAR" />
+   </association>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, parent_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jackchen.pojo.ProductCategoryExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from amz_product_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from amz_product_category
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from amz_product_category
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jackchen.pojo.ProductCategoryExample" >
+    delete from amz_product_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jackchen.pojo.ProductCategory" >
+    insert into amz_product_category (id, name, parent_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.jackchen.pojo.ProductCategory" >
+    insert into amz_product_category
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jackchen.pojo.ProductCategoryExample" resultType="java.lang.Integer" >
+    select count(*) from amz_product_category
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update amz_product_category
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.parentId != null" >
+        parent_id = #{record.parentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update amz_product_category
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      parent_id = #{record.parentId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jackchen.pojo.ProductCategory" >
+    update amz_product_category
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jackchen.pojo.ProductCategory" >
+    update amz_product_category
+    set name = #{name,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+
+  <select id="findParentMenu" resultType="java.util.Map">
+    SELECT DISTINCT m1.*
+    FROM amz_product_category m1
+    INNER JOIN amz_product_category m2
+    on m1.id = m2.parent_id
+  </select>
+
+
+  <select id="findMenuByParentId" parameterType="long" resultType="java.util.Map">
+     SELECT DISTINCT m1.*
+    FROM amz_product_category m1
+    WHERE
+		m1.parent_id = #{id} and m1.id != #{id}
+  </select>
+
+
+  <select id="findSecondProduct" resultMap="BaseResultMap">
+    SELECT DISTINCT p1.*,m1.*,m2.*
+    FROM amz_product p1 INNER JOIN amz_product_category m1 on p1.minor_id = m1.id
+    INNER JOIN amz_product_category m2 on m2.id = m1.parent_id
+
+
+    <if test=" id != null and id!='' " >
+      and m1.id = #{id}
+    </if>
+    <if test=" productName != null and productName!='' " >
+      and p1.name like '%${productName}%'
+    </if>
+  </select>
+</mapper>

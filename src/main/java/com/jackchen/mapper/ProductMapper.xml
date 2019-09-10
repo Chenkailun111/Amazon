@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jackchen.mapper.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.jackchen.pojo.Product" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="stock" property="stock" jdbcType="BIGINT" />
+    <result column="major_id" property="majorId" jdbcType="BIGINT" />
+    <result column="minor_id" property="minorId" jdbcType="BIGINT" />
+    <result column="img_source" property="imgSource" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, name, description, price, stock, major_id, minor_id, img_source
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jackchen.pojo.ProductExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from amz_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from amz_product
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from amz_product
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jackchen.pojo.ProductExample" >
+    delete from amz_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jackchen.pojo.Product" >
+    insert into amz_product (id, name, description, 
+      price, stock, major_id, 
+      minor_id, img_source)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{stock,jdbcType=BIGINT}, #{majorId,jdbcType=BIGINT}, 
+      #{minorId,jdbcType=BIGINT}, #{imgSource,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jackchen.pojo.Product" >
+    insert into amz_product
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="stock != null" >
+        stock,
+      </if>
+      <if test="majorId != null" >
+        major_id,
+      </if>
+      <if test="minorId != null" >
+        minor_id,
+      </if>
+      <if test="imgSource != null" >
+        img_source,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null" >
+        #{stock,jdbcType=BIGINT},
+      </if>
+      <if test="majorId != null" >
+        #{majorId,jdbcType=BIGINT},
+      </if>
+      <if test="minorId != null" >
+        #{minorId,jdbcType=BIGINT},
+      </if>
+      <if test="imgSource != null" >
+        #{imgSource,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jackchen.pojo.ProductExample" resultType="java.lang.Integer" >
+    select count(*) from amz_product
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update amz_product
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.name != null" >
+        name = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.description != null" >
+        description = #{record.description,jdbcType=VARCHAR},
+      </if>
+      <if test="record.price != null" >
+        price = #{record.price,jdbcType=DECIMAL},
+      </if>
+      <if test="record.stock != null" >
+        stock = #{record.stock,jdbcType=BIGINT},
+      </if>
+      <if test="record.majorId != null" >
+        major_id = #{record.majorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.minorId != null" >
+        minor_id = #{record.minorId,jdbcType=BIGINT},
+      </if>
+      <if test="record.imgSource != null" >
+        img_source = #{record.imgSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update amz_product
+    set id = #{record.id,jdbcType=BIGINT},
+      name = #{record.name,jdbcType=VARCHAR},
+      description = #{record.description,jdbcType=VARCHAR},
+      price = #{record.price,jdbcType=DECIMAL},
+      stock = #{record.stock,jdbcType=BIGINT},
+      major_id = #{record.majorId,jdbcType=BIGINT},
+      minor_id = #{record.minorId,jdbcType=BIGINT},
+      img_source = #{record.imgSource,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jackchen.pojo.Product" >
+    update amz_product
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="stock != null" >
+        stock = #{stock,jdbcType=BIGINT},
+      </if>
+      <if test="majorId != null" >
+        major_id = #{majorId,jdbcType=BIGINT},
+      </if>
+      <if test="minorId != null" >
+        minor_id = #{minorId,jdbcType=BIGINT},
+      </if>
+      <if test="imgSource != null" >
+        img_source = #{imgSource,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jackchen.pojo.Product" >
+    update amz_product
+    set name = #{name,jdbcType=VARCHAR},
+      description = #{description,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      stock = #{stock,jdbcType=BIGINT},
+      major_id = #{majorId,jdbcType=BIGINT},
+      minor_id = #{minorId,jdbcType=BIGINT},
+      img_source = #{imgSource,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findIshot" resultMap="BaseResultMap">
+     SELECT *
+        FROM amz_product ORDER BY id DESC LIMIT 0,3
+  </select>
+
+  <select id="findList" resultMap="BaseResultMap" parameterType="map">
+    SELECT * FROM amz_product
+  </select>
+</mapper>

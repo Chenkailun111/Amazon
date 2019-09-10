@@ -1,0 +1,232 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jackchen.mapper.ShopCartMapper" >
+  <resultMap id="BaseResultMap" type="com.jackchen.pojo.ShopCart" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="pid" property="pid" jdbcType="BIGINT" />
+    <result column="pnum" property="pnum" jdbcType="INTEGER" />
+    <result column="uid" property="uid" jdbcType="BIGINT" />
+
+    <association property="user" javaType="com.jackchen.pojo.User">
+      <id column="id" property="id" jdbcType="BIGINT" />
+      <result column="uname" property="uname" jdbcType="VARCHAR" />
+      <result column="pwd" property="pwd" jdbcType="VARCHAR" />
+      <result column="sex" property="sex" jdbcType="INTEGER" />
+      <result column="birthday" property="birthday" jdbcType="DATE" />
+      <result column="idcard" property="idcard" jdbcType="VARCHAR" />
+      <result column="email" property="email" jdbcType="VARCHAR" />
+      <result column="mobile" property="mobile" jdbcType="VARCHAR" />
+      <result column="address" property="address" jdbcType="VARCHAR" />
+      <result column="utype" property="utype" jdbcType="INTEGER" />
+    </association>
+
+    <association property="product" javaType="com.jackchen.pojo.Product">
+      <id column="id" property="id" jdbcType="BIGINT" />
+      <result column="name" property="name" jdbcType="VARCHAR" />
+      <result column="description" property="description" jdbcType="VARCHAR" />
+      <result column="price" property="price" jdbcType="DECIMAL" />
+      <result column="stock" property="stock" jdbcType="BIGINT" />
+      <result column="major_id" property="majorId" jdbcType="BIGINT" />
+      <result column="minor_id" property="minorId" jdbcType="BIGINT" />
+      <result column="img_source" property="imgSource" jdbcType="VARCHAR" />
+    </association>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, pid, pnum, uid
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.jackchen.pojo.ShopCartExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from amz_shop_cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from amz_shop_cart
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from amz_shop_cart
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.jackchen.pojo.ShopCartExample" >
+    delete from amz_shop_cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.jackchen.pojo.ShopCart" >
+    insert into amz_shop_cart (id, pid, pnum, 
+      uid)
+    values (#{id,jdbcType=BIGINT}, #{pid,jdbcType=BIGINT}, #{pnum,jdbcType=INTEGER}, 
+      #{uid,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.jackchen.pojo.ShopCart" >
+    insert into amz_shop_cart
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="pid != null" >
+        pid,
+      </if>
+      <if test="pnum != null" >
+        pnum,
+      </if>
+      <if test="uid != null" >
+        uid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="pnum != null" >
+        #{pnum,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        #{uid,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.jackchen.pojo.ShopCartExample" resultType="java.lang.Integer" >
+    select count(*) from amz_shop_cart
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update amz_shop_cart
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.pid != null" >
+        pid = #{record.pid,jdbcType=BIGINT},
+      </if>
+      <if test="record.pnum != null" >
+        pnum = #{record.pnum,jdbcType=INTEGER},
+      </if>
+      <if test="record.uid != null" >
+        uid = #{record.uid,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update amz_shop_cart
+    set id = #{record.id,jdbcType=BIGINT},
+      pid = #{record.pid,jdbcType=BIGINT},
+      pnum = #{record.pnum,jdbcType=INTEGER},
+      uid = #{record.uid,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.jackchen.pojo.ShopCart" >
+    update amz_shop_cart
+    <set >
+      <if test="pid != null" >
+        pid = #{pid,jdbcType=BIGINT},
+      </if>
+      <if test="pnum != null" >
+        pnum = #{pnum,jdbcType=INTEGER},
+      </if>
+      <if test="uid != null" >
+        uid = #{uid,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.jackchen.pojo.ShopCart" >
+    update amz_shop_cart
+    set pid = #{pid,jdbcType=BIGINT},
+      pnum = #{pnum,jdbcType=INTEGER},
+      uid = #{uid,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="findCarts" resultMap="BaseResultMap">
+    SELECT DISTINCT s1.*,a1.*
+  FROM amz_product a1 INNER JOIN amz_shop_cart s1 on a1.id = s1.pid
+  INNER JOIN amz_user u1 on u1.id = s1.uid and u1.id = #{id}
+  </select>
+
+  <select id="findByPidAndUserId" resultMap="BaseResultMap">
+    SELECT DISTINCT s1.*,a1.*
+  FROM amz_product a1 INNER JOIN amz_shop_cart s1 on a1.id = s1.pid
+  INNER JOIN amz_user u1 on u1.id = s1.uid 	and a1.id = #{pid} and u1.id = #{userId}
+  </select>
+</mapper>
