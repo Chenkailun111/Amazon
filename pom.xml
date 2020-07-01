@@ -21,7 +21,7 @@
         <jackson.version>2.7.4</jackson.version>
         <json.version>20160807</json.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <quartz.version>2.2.2</quartz.version>
+        <quartz.version>2.3.2</quartz.version>
         <springframework.version>4.3.5.RELEASE</springframework.version>
         <quartz.version>2.2.2</quartz.version>
 
